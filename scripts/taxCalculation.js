@@ -12,22 +12,17 @@ function calculate(value) {
     const bracketsArray = singlePersonTax.brackets;
     const rates         = singlePersonTax.rates;
   
-    for (let i = 1; i < bracketsArray.length; i++) {
-      if (inputValue > bracketsArray[i - 1]) {
-        if (inputValue > bracketsArray[i]) {
-          result += (bracketsArray[i] - bracketsArray[i-1]) * rates[i];
-          inputValue = inputValue - bracketsArray[i];
-        } else {
-          result += bracketsArray[i - 1] * rates[i - 1];
-          inputValue = inputValue - bracketsArray[i - 1];
-        }
-      } else {
-        result += inputValue * rates[i - 1];
-        break;
+    for (let i = bracketsArray.length; i >= 0; i--) {
+      let bracket = bracketsArray[i];
+      let rate = rates[i];
+      if (inputValue > bracket) {
+        let diff = inputValue - bracket;
+        result += diff * rate;
+        inputValue -= diff;
       }
     }
   } else {
-    result = 'No tax for you =)'
+    result = 'No tax for you'
   }
 
   return result;
